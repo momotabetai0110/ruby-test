@@ -24,7 +24,7 @@ development:
   <<: *default
   database: ruby_test_development
   username: postgres     # PostgreSQL の管理ユーザー
-  password: あなたの設定したパスワード
+  password: postgres
   host: localhost
   port: 5432
 
