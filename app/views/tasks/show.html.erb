@@ -1,6 +1,7 @@
-<h1><%= @task.title %></h1>
+<h1>タスク詳細</h1>
+<h2>タスク名:<%= @task.title %></h2>
+<p>説明:<%= @task.description %></p>
+<p>作成日時:<%= @task.created_at %></p>
+<p>最終更新日時:<%= @task.updated_at %></p>
 
-<p><%= @task.description %></p>
-
-<%# 戻るリンク %>
 <%= link_to "一覧へ戻る", tasks_path %>
