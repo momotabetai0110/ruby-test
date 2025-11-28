@@ -1,6 +1,22 @@
 class TasksController < ApplicationController
   def index
+    puts "start"
     @tasks = Task.all
+
+    if params[:search].present?
+      @tasks = @tasks.where("title LIKE ? OR description LIKE ?",
+        "%#{params[:search]}%",
+        "%#{params[:search]}%")
+    end
+
+    case params[:sort]
+    when "title"
+      @tasks = @tasks.order(:title)
+    when "due"
+      @tasks = @tasks.order(:due_date)
+    else
+      @tasks = @tasks.order(created_at: :desc)
+    end
   end
 
   def new
@@ -35,6 +51,6 @@ class TasksController < ApplicationController
   private
 
 def task_params
-  params.require(:task).permit(:title, :description)
+  params.require(:task).permit(:title, :description, :due_date)
 end
 end
