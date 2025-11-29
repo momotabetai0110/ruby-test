@@ -1,0 +1,13 @@
+【CRUD機能】
+マイグレーション作成
+bin/rails generate model task title:string description:string
+
+マイグレーション実行
+bin/rails db:migrate
+
+コントローラー作成
+bin/rails generate controller Tasks index new show edit
+
+【CRUD機能 API】
+コントローラー作成
+bin/rails generate controller Api::Tasks index show create update destroy
