@@ -16,3 +16,6 @@ bin/rails generate controller Api::Tasks index show create update destroy
 マイグレーション作成
 bin/rails generate model User name:string email:string password:string is_admin:boolean
 
+【カラム追加】
+マイグレーション作成
+   bin/rails generate migration AddUserIdToTasks user:references
