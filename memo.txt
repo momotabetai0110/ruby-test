@@ -11,3 +11,8 @@ bin/rails generate controller Tasks index new show edit
 【CRUD機能 API】
 コントローラー作成
 bin/rails generate controller Api::Tasks index show create update destroy
+
+【データベース追加】
+マイグレーション作成
+bin/rails generate model User name:string email:string password:string is_admin:boolean
+
