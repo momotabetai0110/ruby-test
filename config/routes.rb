@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
   namespace :api do
     resources :tasks
-    delete "deleteRecentlyTask", to: "tasks#delete_recently_task"
+    delete "delete_recently_task", to: "tasks#delete_recently_task"
+    post "make_tasks", to: "tasks#make_tasks"
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

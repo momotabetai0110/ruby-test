@@ -39,6 +39,26 @@ class Api::TasksController < ApplicationController
     end
   end
 
+  def make_tasks
+    result = {
+      success: 0,
+      successTask: [],
+      defeat: 0,
+      defeatTask: []
+    }
+    tasks_params[:tasks].each do |one|
+      one[:user_id] = tasks_params[:user_id]
+      task = Task.create(one)
+      if task.persisted?
+        result[:success] += 1
+        result[:successTask] << one
+      else
+        result[:defeat] += 1
+        result[:defeatTask] << one
+      end
+    end
+    render json: result, status: :created
+  end
   # IDで指定したタスクの情報を更新する
   # そのIDに対応するタスクが存在しない場合は存在しない旨をメッセージを返す
   # @param task_params [ActionController::Parameters] タスク名、説明、期日を含んだパラメータ
@@ -87,5 +107,10 @@ class Api::TasksController < ApplicationController
   private
   def task_params
     params.require(:task).permit(:title, :description, :due_date, :user_id)
+  end
+
+  private
+  def tasks_params
+    params.permit(:user_id, task: {}, tasks: [ :title, :description, :due_date, :user_id ])
   end
 end
