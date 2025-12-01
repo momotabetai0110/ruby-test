@@ -1,6 +1,10 @@
 class Api::TasksController < ApplicationController
   protect_from_forgery with: :null_session
   before_action :set_task, only: [ :show, :update, :destroy ]
+  rescue_from PG::ConnectionBad, with: :database_error_handling
+  rescue_from ActionController::ParameterMissing, with: :parameter_error_handling
+  rescue_from ActiveRecord::StatementInvalid, with: :sql_error_handling
+  rescue_from StandardError, with: :standard_error_handling
 
   # タスクを全件取得する
   # タスクが存在しない場合は存在しない旨をメッセージを返す
@@ -106,5 +110,21 @@ class Api::TasksController < ApplicationController
 
   def error_handling(error_message, status)
     render json: { status: "NG", errors: error_message }, status: status
+  end
+
+  def database_error_handling(exception)
+    render json: { status: "NG", errors: [ "データベースに接続できません" ] }, status: :service_unavailable
+  end
+
+  def parameter_error_handling(exception)
+    render json: { status: "NG", errors: [ "パラメータが不足しています:#{exception.param}"  ] }, status: :bad_request
+  end
+
+  def sql_error_handling(exception)
+    render json: { status: "NG", errors: [ "SQLが不正です:#{ exception.message}" ] }, status: :unprocessable_entity
+  end
+
+  def standard_error_handling(exception)
+    render json: { status: "NG", errors: [ "予期せぬエラー#{ exception.message}" ] }, status: :internal_server_error
   end
 end
