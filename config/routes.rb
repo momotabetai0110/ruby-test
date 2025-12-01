@@ -1,8 +1,11 @@
 Rails.application.routes.draw do
   namespace :api do
-    resources :tasks
-    delete "delete_recently_task", to: "tasks#delete_recently_task"
-    post "make_tasks", to: "tasks#make_tasks"
+    resources :tasks do
+      collection do
+        delete :recent_task
+        post :bulk_tasks
+      end
+    end
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
@@ -20,7 +23,12 @@ Rails.application.routes.draw do
   root "tasks#index"
   # tasksクラス
   resources :tasks
-  get "tasks/new"
-  get "tasks/show"
-  get "tasks/edit"
+  # ↑これだけで以下全部生える：
+  # GET /tasks → index
+  # GET /tasks/new → new
+  # GET /tasks/:id → show
+  # GET /tasks/:id/edit → edit
+  # POST /tasks → create
+  # PATCH/PUT /tasks/:id → update
+  # DELETE /tasks/:id → destroy
 end

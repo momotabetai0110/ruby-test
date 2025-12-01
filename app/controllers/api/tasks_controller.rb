@@ -38,7 +38,7 @@ class Api::TasksController < ApplicationController
     end
   end
 
-  def make_tasks
+  def bulk_tasks
     result = {
       success: 0,
       successTask: [],
@@ -84,7 +84,7 @@ class Api::TasksController < ApplicationController
   # 最も新しいタスクを削除する
   # タスクが存在しない場合は存在しない旨をメッセージを返す
   # @return [Hash] 削除したタスク情報 { status: "OK", result: Task }
-  def delete_recently_task
+  def recent_task
     task = Task.order(created_at: :desc).first
     if task.nil?
       render json: { status: "OK", result: "タスクが1つもありません" }, status: :ok
