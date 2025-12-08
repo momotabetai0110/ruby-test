@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   namespace :api do
+    resources :categories
     resources :tasks do
       collection do
         delete :recent_task

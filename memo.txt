@@ -18,4 +18,5 @@ bin/rails generate model User name:string email:string password:string is_admin:
 
 【カラム追加】
 マイグレーション作成
-   bin/rails generate migration AddUserIdToTasks user:references
+bin/rails generate migration AddUserIdToTasks user:references
+

@@ -1,4 +1,7 @@
 class Task < ApplicationRecord
+  belongs_to :category
+  belongs_to :user
+
 # validates :カラム名,バリデーション内容
 # 【バリデーション内容】
 # presence（空かどうか）
@@ -6,6 +9,9 @@ class Task < ApplicationRecord
 # numericality（数値かどうか）
 # format（正しい形式かどうか）
 # uniqueness（一意かどうか）
+
+# カテゴリーID 必須
+validates :category_id, presence: true
 
 # ユーザーID 必須
 validates :user_id, presence: true
@@ -24,7 +30,6 @@ validates :description,
 validate :check_due_date
 
 private
-
 def check_due_date
   return if due_date.nil?
   if due_date.to_date < Date.current
