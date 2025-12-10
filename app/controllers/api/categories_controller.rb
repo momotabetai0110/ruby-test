@@ -28,6 +28,7 @@ class Api::CategoriesController < Api::HelperController
     category = Category.create(category_param)
     if category.persisted?
       render json: { status: "OK", result: category }, status: :created
+      return
     else
       error_handling(category.errors.full_messages, :unprocessable_entity)
     end
@@ -41,6 +42,7 @@ class Api::CategoriesController < Api::HelperController
   def update
     if @category.update(category_param)
       render json: { status: "OK", result: @category }, status: :ok
+      return
     else
       error_handling(@category.errors.full_messages, :unprocessable_entity)
     end
@@ -51,7 +53,12 @@ class Api::CategoriesController < Api::HelperController
   # @return [Hash] 削除したカテゴリー情報 { status: "OK", result: category }
   def destroy
     category = @category.destroy
-    render json: { status: "OK", result: category }, status: :ok
+    if category.destroyed?
+      render json: { status: "OK", result: category }, status: :ok
+      return
+    else
+      error_handling(@category.errors.full_messages, :unprocessable_entity)
+    end
   end
 
   private
@@ -62,6 +69,9 @@ class Api::CategoriesController < Api::HelperController
 
   def set_category
     @category = Category.find_by(id: params[:id])
-    render json: { status: "OK", result: "[ID:#{params[:id]}]そのカテゴリーは見つかりません" }, status: :ok if @category.nil?
+    if @category.nil?
+      render json: { status: "NG", errors: [ "[ID:#{params[:id]}]そのカテゴリーは見つかりません" ] }, status: :not_found
+      return
+    end
   end
 end
